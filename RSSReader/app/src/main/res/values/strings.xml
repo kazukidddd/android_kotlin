@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">RSSReader</string>
+    <string name="pubDate">%1$tm月%1$td日%1$sH時</string>
+</resources>
