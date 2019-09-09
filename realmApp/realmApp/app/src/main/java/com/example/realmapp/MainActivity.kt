@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity() {
 
     fun create() {
         mRealm.executeTransaction {
-            ids = mRealm.where(RealmMode::class.java).findAll().last()!!.id + 1
             var texts = mRealm.createObject(RealmMode::class.java, ids)
             texts.name = edit_text.text.toString()
             mRealm.copyToRealm(texts)
