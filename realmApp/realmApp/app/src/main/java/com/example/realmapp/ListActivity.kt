@@ -63,10 +63,13 @@ class ListActivity : AppCompatActivity() {
     fun delete(id:Int){
         mRealm.executeTransaction {
             var text = mRealm.where(RealmMode::class.java).findAll()
-            text.deleteAllFromRealm()
+            for (index in id + 1..text.size-1){
+                text[index]?.id?.let { it - 1 }
+            }
+            text.deleteFromRealm(id)
             textlist.removeAt(id)
         }
-        create()
+//        create()
     }
 
     fun create() {
