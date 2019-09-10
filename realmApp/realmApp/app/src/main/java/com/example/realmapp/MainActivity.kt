@@ -6,12 +6,14 @@ import android.os.Bundle
 import android.widget.EditText
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import io.realm.Sort
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mRealm : Realm
-    var ids :Int = 0
+    private var ids : Int = 0
+    private var realmId : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,36 +26,51 @@ class MainActivity : AppCompatActivity() {
             .build()
         mRealm = Realm.getInstance(realmConfig)
 
+
+        /**
+         * 追加ボタンのクリックリスナー
+         */
         button.setOnClickListener {
             mRealm = Realm.getInstance(realmConfig)
             ids = mRealm.where(RealmMode::class.java).findAll().size
-            if (!edit_text.text.isEmpty()){
-                create()
+
+            realmId = if (!mRealm.where(RealmMode::class.java).findAll().isEmpty()){
+                mRealm.where(RealmMode::class.java).findAll().sort("id",Sort.ASCENDING).last()?.id!! + 1
             }else{
-                createLion()
+                0
             }
+
+            create()
+
+            val intent = Intent(applicationContext, ListActivity::class.java)
+            startActivity(intent)
+        }
+
+        /**
+         * リストへボタンのクリックリスナー
+         */
+        listButton.setOnClickListener {
             val intent = Intent(applicationContext, ListActivity::class.java)
             startActivity(intent)
         }
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        edit_text.text.clear()
+    }
+
     fun create() {
         mRealm.executeTransaction {
-            var texts = mRealm.createObject(RealmMode::class.java, ids)
-            texts.name = edit_text.text.toString()
+            var texts = mRealm.createObject(RealmMode::class.java, realmId)
+            if (!edit_text.text.isEmpty()){
+                texts.name = edit_text.text.toString()
+            }else{
+                texts.name = "サヨナライオン"
+            }
+            texts.listId = ids
             mRealm.copyToRealm(texts)
-            edit_text.text.clear()
         }
     }
-
-    fun createLion(){
-        mRealm.executeTransaction {
-            var texts = mRealm.createObject(RealmMode::class.java, ids)
-            texts.name = "サヨナライオン"
-            mRealm.copyToRealm(texts)
-            edit_text.text.clear()
-        }
-    }
-
 }

@@ -8,6 +8,7 @@ import android.widget.ListView
 
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import io.realm.Sort
 import kotlinx.android.synthetic.main.activity_list.*
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -27,10 +28,10 @@ class ListActivity : AppCompatActivity() {
             .build()
         mRealm = Realm.getInstance(realmConfig)
 
-        texts = mRealm.where(RealmMode::class.java).findAll()
+        texts = mRealm.where(RealmMode::class.java).findAll().sort("listId",Sort.ASCENDING)
         for (text in texts){
             text.name
-            textlist.add(text.id,text.name)
+            textlist.add(text.listId,text.name)
         }
 
         val listView = ListView(this)
@@ -39,15 +40,15 @@ class ListActivity : AppCompatActivity() {
         val arrayAdapter = ArrayAdapter(this,
             android.R.layout.simple_list_item_1, textlist)
 
-        listView.setAdapter(arrayAdapter)
+        listView.adapter = arrayAdapter
 
-        listView.setOnItemClickListener { parent, view, position, id ->
+        listView.setOnItemClickListener { _, _, _, id ->
 //            update(id.toInt())
             delete(id.toInt())
 
             val arrayAdapter = ArrayAdapter(this,
                 android.R.layout.simple_list_item_1, textlist)
-            listView.setAdapter(arrayAdapter)
+            listView.adapter = arrayAdapter
         }
 
     }
@@ -62,26 +63,14 @@ class ListActivity : AppCompatActivity() {
 
     fun delete(id:Int){
         mRealm.executeTransaction {
-            var text = mRealm.where(RealmMode::class.java).findAll()
-            for (index in id + 1..text.size-1){
-                text[index]?.id?.let { it - 1 }
-            }
+            var text = mRealm.where(RealmMode::class.java).findAll().sort("listId", Sort.ASCENDING)
             text.deleteFromRealm(id)
-            textlist.removeAt(id)
-        }
-//        create()
-    }
-
-    fun create() {
-        mRealm.executeTransaction {
-            var ids = 0
-
-            for (text in textlist) {
-                var texts = mRealm.createObject(RealmMode::class.java, ids)
-                texts.name = text.toString()
-                mRealm.copyToRealm(texts)
-                ids += 1
+            for (index in id until text.size - 1){
+                val obj = text[index]
+                obj?.listId = obj?.listId?.minus(1)!!
+//                obj?.listId?.let { it - 1 }
             }
+            textlist.removeAt(id)
         }
     }
 }
