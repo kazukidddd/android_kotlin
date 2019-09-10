@@ -65,7 +65,7 @@ class ListActivity : AppCompatActivity() {
         mRealm.executeTransaction {
             var text = mRealm.where(RealmMode::class.java).findAll().sort("listId", Sort.ASCENDING)
             text.deleteFromRealm(id)
-            for (index in id until text.size - 1){
+            for (index in id until text.size){
                 val obj = text[index]
                 obj?.listId = obj?.listId?.minus(1)!!
 //                obj?.listId?.let { it - 1 }
