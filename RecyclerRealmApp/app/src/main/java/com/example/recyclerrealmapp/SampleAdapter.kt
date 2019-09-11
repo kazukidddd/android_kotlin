@@ -6,52 +6,52 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import io.realm.Realm
+import io.realm.RealmConfiguration
+import io.realm.Sort
 import java.util.*
+import android.R
+import android.widget.ImageView
 
-class SampleAdapter(context: Context,
-                    private val onItemClicked: (TimeZone) -> Unit)
-    :RecyclerView.Adapter<SampleAdapter.SampleViewHolder>(){
-    //レイアウトからビューを生成するinflater
-    private val inflater = LayoutInflater.from(context)
 
-    //リサイクラビューで表示するタイムゾーンのリスト
-    private val timeZones = TimeZone.getAvailableIDs().map {
-            id -> TimeZone.getTimeZone(id)
-    }
+class MyAdapter// Provide a suitable constructor (depends on the kind of dataset)
+internal constructor(
+    private val iNames: List<String>
+) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SampleViewHolder {
-        //Viewを生成する
-        val view = inflater.inflate(R.layout.realm_list,parent,false)
+    // Provide a reference to the views for each data item
+    // Complex data items may need more than one view per item, and
+    // you provide access to all the views for a data item in a view holder
+    internal class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+        // each data item is just a string in this case
+        var textView: TextView
 
-        //ViewHolderを作る
-        val viewHolder = SampleViewHolder(view)
+        init {
+            textView = v.findViewById(R.id.text_view)
 
-        //viewをタップしたときの処理
-        view.setOnClickListener{
-            //アダプター上の位置を得る
-            val position = viewHolder.adapterPosition
-
-            //位置をもとに、タイムゾーンを得る
-            val timeZone = timeZones[position]
-
-            //コールバックを呼び出す
-            onItemClicked(timeZone)
         }
-        return viewHolder
     }
 
-    override fun getItemCount() = timeZones.size
+    // Create new views (invoked by the layout manager)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        // create a new view
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.my_text_view, parent, false)
 
-    override fun onBindViewHolder(holder: SampleViewHolder,position:Int) {
-        //位置に応じたタイムゾーンを得る
-        val timeZone = timeZones[position]
-
-        //表示内容を更新する
-        holder.timeZone.text = timeZone.id
+        return ViewHolder(view)
     }
 
-    //Viewへの参照をもっておくViewHolder
-    class SampleViewHolder(view: View) : RecyclerView.ViewHolder(view){
-        val timeZone = view.findViewById<TextView>(R.id.timeZone)
+    // Replace the contents of a view (invoked by the layout manager)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        // - get element from your dataset at this position
+        // - replace the contents of the view with that element
+        holder.imageView.setImageResource(iImages[position])
+        holder.textView.text = iNames[position]
+        holder.emailView.text = iEmails[position]
+    }
+
+    // Return the size of your dataset (invoked by the layout manager)
+    override fun getItemCount(): Int {
+        return iNames.size
     }
 }
