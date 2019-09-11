@@ -1,20 +1,14 @@
-package com.example.recyclerrealmapp
+package com.example.recyclerrealmapp.entities
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import io.realm.Realm
-import io.realm.RealmConfiguration
-import io.realm.Sort
-import java.util.*
 import android.R
-import android.widget.ImageView
 
 
-class MyAdapter// Provide a suitable constructor (depends on the kind of dataset)
+class Sample// Provide a suitable constructor (depends on the kind of dataset)
 internal constructor(
     private val iNames: List<String>
 ) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {

@@ -1,9 +1,11 @@
-package com.example.recyclerrealmapp
+package com.example.recyclerrealmapp.activities
 
 import android.app.ListActivity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.recyclerrealmapp.R
+import com.example.recyclerrealmapp.SampleModel
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.realm.Sort
