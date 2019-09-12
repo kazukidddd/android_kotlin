@@ -1,8 +1,11 @@
 package com.example.realmapp
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.AttributeSet
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ListView
 
@@ -34,8 +37,9 @@ class ListActivity : AppCompatActivity() {
             textlist.add(text.listId,text.name)
         }
 
-        val listView = ListView(this)
-        setContentView(listView)
+        setContentView(R.layout.activity_list)
+        val listView = recycler_view
+
 
         val arrayAdapter = ArrayAdapter(this,
             android.R.layout.simple_list_item_1, textlist)
@@ -51,6 +55,10 @@ class ListActivity : AppCompatActivity() {
             listView.adapter = arrayAdapter
         }
 
+    }
+
+    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
+        return super.onCreateView(name, context, attrs)
     }
     fun update(id:Int){
         mRealm.executeTransaction {
