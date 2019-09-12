@@ -5,6 +5,7 @@
     <color name="colorAccent">#616161</color>
     <color name="recyclerViewBackgroundColor">#ffffff</color>
     <color name="recyclerViewBackgroundAccentColor">#cccccc</color>
+    <color name="textColor">#00f</color>
 
     <color name="defaultTextColor">#ffffff</color>
 </resources>

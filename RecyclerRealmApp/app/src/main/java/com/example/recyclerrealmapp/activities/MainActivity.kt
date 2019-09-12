@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
             create()
 
-            val intent = Intent(applicationContext, ListActivity::class.java)
+            val intent = Intent(applicationContext, com.example.recyclerrealmapp.activities.ListActivity::class.java)
             startActivity(intent)
         }
 
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
          * リストへボタンのクリックリスナー
          */
         listButton.setOnClickListener {
-            val intent = Intent(applicationContext, ListActivity::class.java)
+            val intent = Intent(applicationContext, com.example.recyclerrealmapp.activities.ListActivity::class.java)
             startActivity(intent)
         }
 
