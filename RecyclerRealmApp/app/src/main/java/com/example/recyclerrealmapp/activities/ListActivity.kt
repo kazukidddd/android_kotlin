@@ -18,6 +18,7 @@ import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.realm.RealmResults
 import io.realm.Sort
+import io.realm.kotlin.delete
 
 
 class ListActivity : AppCompatActivity() {
@@ -33,6 +34,7 @@ class ListActivity : AppCompatActivity() {
 
     private lateinit var recyclerViewLayout : LinearLayout
     private var animFlag = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,8 +72,6 @@ class ListActivity : AppCompatActivity() {
         // 画面サイズに合わせてレイアウトサイズを決定する。
         setLayoutSize(this)
         recyclerView.adapter = viewAdapter
-
-        recyclerView.setOnClickListener {  }
     }
 
     private fun createData(){
@@ -127,15 +127,7 @@ class ListActivity : AppCompatActivity() {
                     viewAdapter.notifyItemMoved(fromPosition, toPosition)
                 }
 
-//                mRealm.executeTransaction {
-//                    texts.deleteAllFromRealm()
-//                    for (text in textlist){
-//                        var realmText = mRealm.createObject(SampleModel::class.java,text.id)
-//                        realmText.name = text.name
-//                        realmText.listId = text.listId
-//                    }
-//                }
-
+                realmSave()
 
                 return true
             }
@@ -144,6 +136,7 @@ class ListActivity : AppCompatActivity() {
                 super.clearView(recyclerView, viewHolder)
                 endDragging(viewHolder)
             }
+
 
             //左右にスワイプしたとき
             override fun onSwiped(p0: RecyclerView.ViewHolder, p1: Int) {
@@ -156,7 +149,7 @@ class ListActivity : AppCompatActivity() {
                             text.deleteFromRealm(p0.layoutPosition)
                             for (index in p0.layoutPosition until text.size) {
                                 val obj = text[index]
-                                obj?.listId = obj?.listId?.minus(1)!!
+                                obj?.listId = obj?.listId?.minus(1) ?: 0
 //                obj?.listId?.let { it - 1 }
                             }
                         }
@@ -205,6 +198,16 @@ class ListActivity : AppCompatActivity() {
         Log.d("endDragging", "now")
         viewHolder.itemView.isPressed = false
     }
+
+    fun realmSave(){
+        mRealm.executeTransaction {
+            var realmTexts = mRealm.where(SampleModel::class.java).findAll().sort("id",Sort.ASCENDING)
+            for ((index,text)in textlist.withIndex()){
+                realmTexts[text.id]?.listId = index
+            }
+        }
+    }
+
 // TODO: 多分RX使ってやらないとドラッグからのrealmは難しい
 //    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
 //        return if(keyCode == KeyEvent.KEYCODE_BACK) {

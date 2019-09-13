@@ -30,33 +30,6 @@ internal constructor(
 
     }
 
-    class DefaultSampleViewHolder(v: View, activity: ListActivity) : ViewHolder(v) {
-
-        var hamburgerImageView: ImageView = v.findViewById(R.id.hamburger_image_view)
-
-        init {
-
-            v.setOnLongClickListener {
-                Log.d("longClick", "now")
-                v.isPressed = false
-                true
-            }
-            v.setOnClickListener {
-                //                activity.closeRecyclerViewLayout()
-                Log.d("click", "now")
-            }
-
-            hamburgerImageView.setOnTouchListener { view, event ->
-                if (event.actionMasked == MotionEvent.ACTION_DOWN) {
-                    activity.startDragging(this)
-                } else if (event.actionMasked == MotionEvent.ACTION_UP) {
-                    activity.endDragging(this)
-                }
-                true
-            }
-        }
-    }
-
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)

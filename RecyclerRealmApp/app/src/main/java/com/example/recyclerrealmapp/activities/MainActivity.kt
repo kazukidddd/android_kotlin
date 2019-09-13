@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
             ids = mRealm.where(SampleModel::class.java).findAll().size
 
             realmId = if (!mRealm.where(SampleModel::class.java).findAll().isEmpty()){
-                mRealm.where(SampleModel::class.java).findAll().sort("id", Sort.ASCENDING).last()?.id!! + 1
+                mRealm.where(SampleModel::class.java).findAll().sort("id", Sort.ASCENDING).last()?.id?.plus(1) ?: 0
             }else{
                 0
             }
