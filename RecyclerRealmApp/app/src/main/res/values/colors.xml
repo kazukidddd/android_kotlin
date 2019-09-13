@@ -3,9 +3,9 @@
     <color name="colorPrimary">#bdbdbd</color>
     <color name="colorPrimaryDark">#373737</color>
     <color name="colorAccent">#616161</color>
+    <color name="recyclerViewBack">#616100</color>
     <color name="recyclerViewBackgroundColor">#ffffff</color>
     <color name="recyclerViewBackgroundAccentColor">#cccccc</color>
-    <color name="textColor">#00f</color>
 
     <color name="defaultTextColor">#ffffff</color>
 </resources>
