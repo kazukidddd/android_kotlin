@@ -23,24 +23,24 @@ class ListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_list)
 
+        val listView = list_view
+//        listView = findViewById(R.id.list_view) こういう記述の短縮
+
+        //Realmの準備
         Realm.init(this)
-
         val realmConfig = RealmConfiguration.Builder()
             .deleteRealmIfMigrationNeeded()
             .build()
         mRealm = Realm.getInstance(realmConfig)
 
+        //Realmから値を取り出す、配列に組み込む
         texts = mRealm.where(RealmMode::class.java).findAll().sort("listId",Sort.ASCENDING)
         for (text in texts){
             text.name
             textlist.add(text.listId,text.name)
         }
-
-        setContentView(R.layout.activity_list)
-        val listView = recycler_view
-
-
         val arrayAdapter = ArrayAdapter(this,
             android.R.layout.simple_list_item_1, textlist)
 
@@ -50,6 +50,13 @@ class ListActivity : AppCompatActivity() {
 //            update(id.toInt())
             delete(id.toInt())
 
+            val arrayAdapter = ArrayAdapter(this,
+                android.R.layout.simple_list_item_1, textlist)
+            listView.adapter = arrayAdapter
+        }
+
+        fab.setOnClickListener {
+            deleteAll()
             val arrayAdapter = ArrayAdapter(this,
                 android.R.layout.simple_list_item_1, textlist)
             listView.adapter = arrayAdapter
@@ -68,8 +75,15 @@ class ListActivity : AppCompatActivity() {
             texts?.name = "こんにちわに"
         }
     }
+    private fun deleteAll(){
+        mRealm.executeTransaction {
+            var text = mRealm.where(RealmMode::class.java).findAll()
+            text.deleteAllFromRealm()
+            textlist = mutableListOf()
+        }
+    }
 
-    fun delete(id:Int){
+    private fun delete(id:Int){
         mRealm.executeTransaction {
             var text = mRealm.where(RealmMode::class.java).findAll().sort("listId", Sort.ASCENDING)
             text.deleteFromRealm(id)

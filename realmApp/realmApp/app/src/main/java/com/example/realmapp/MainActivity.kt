@@ -19,8 +19,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //Realmの準備
         Realm.init(this)
-
         val realmConfig = RealmConfiguration.Builder()
             .deleteRealmIfMigrationNeeded()
             .build()
@@ -61,6 +61,9 @@ class MainActivity : AppCompatActivity() {
         edit_text.text.clear()
     }
 
+    /**
+     * Realmにデータ追加
+     */
     fun create() {
         mRealm.executeTransaction {
             var texts = mRealm.createObject(RealmMode::class.java, realmId)
