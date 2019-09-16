@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="calcButton">#50BEC4</color>
+    <color name="calcText">#ffffff</color>
+    <color name="numberButton">#71736A</color>
+    <color name="numberText">#ffffff</color>
+    <color name="topCalcButton">#50C4A3</color>
+    <color name="topCalcText">#ffffff</color>
+</resources>
