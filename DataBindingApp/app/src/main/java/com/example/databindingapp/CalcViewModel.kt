@@ -5,9 +5,10 @@ import androidx.databinding.ObservableField
 class CalcViewModel {
     var result = ObservableField("")
     var mValueOne = 0.0F
-    var mValueTwo = 0.0F
     var isPlus = false
     var isMinus = false
+    var isWaru = false
+    var isKakeru = false
     var isOnce = false
 
     fun buttonClicked(number : Int){
@@ -28,6 +29,8 @@ class CalcViewModel {
     fun clearClicked(){
         result.set("")
         isOnce = false
+        isPlus = false
+        isMinus = false
     }
 
     fun plusClicked(){
@@ -46,20 +49,52 @@ class CalcViewModel {
         }
     }
 
-    fun equalClicked(){
+    fun kakeruClicked(){
         if (result.get() != ""){
-            if (!isOnce){
-                mValueTwo = result.get()?.toFloat() ?: 0.0F
-                isOnce = true
-            }
+            mValueOne = result.get()?.toFloat() ?: 0.0F
+            isKakeru = true
+            result.set("")
+        }
+    }
 
-            if (isPlus){
-                var resultAll = mValueOne + mValueTwo
-                mValueOne = mValueTwo
-                result.set(resultAll.toString())
-            }else if (isMinus){
-                var resultAll = mValueOne - mValueTwo
-                result.set(resultAll.toString())
+    fun waruClicked(){
+        if (result.get() != ""){
+            mValueOne = result.get()?.toFloat() ?: 0.0F
+            isWaru = true
+            result.set("")
+        }
+    }
+
+    fun equalClicked(){
+        var resultAll = 0.0F
+        if (result.get() != ""){
+                val mValueTwo = result.get()?.toFloat() ?: 0.0F
+
+            when {
+                isPlus -> {
+                    resultAll = mValueOne + mValueTwo
+                    mValueOne = mValueTwo
+                    result.set(resultAll.toString())
+                    isPlus = false
+                }
+                isMinus -> {
+                    resultAll = mValueOne - mValueTwo
+                    mValueOne = mValueTwo
+                    result.set(resultAll.toString())
+                    isMinus = false
+                }
+                isKakeru -> {
+                    resultAll = mValueOne * mValueTwo
+                    mValueOne = mValueTwo
+                    result.set(resultAll.toString())
+                    isKakeru = false
+                }
+                isWaru -> {
+                    resultAll = mValueOne / mValueTwo
+                    mValueOne = mValueTwo
+                    result.set(resultAll.toString())
+                    isWaru = false
+                }
             }
         }
 
