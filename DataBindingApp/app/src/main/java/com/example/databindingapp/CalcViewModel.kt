@@ -1,102 +1,115 @@
 package com.example.databindingapp
 
 import androidx.databinding.ObservableField
+import java.math.MathContext
 
 class CalcViewModel {
-    var result = ObservableField("")
+    var result = ObservableField("0")
     var mValueOne = 0.0F
-    var isPlus = false
-    var isMinus = false
-    var isWaru = false
-    var isKakeru = false
-    var isOnce = false
+    var calcMethod = CalcFlg.NONE
 
-    fun buttonClicked(number : Int){
+    fun buttonClicked(number: Int) {
         val builder = StringBuilder()
-        builder.append(result.get()).append(number.toString())
+
+        if (result.get().toString().startsWith("0") && result.get().toString().indexOf(".") != -1) {
+            builder.append(result.get()).append(number.toString())
+        } else if (result.get().toString().startsWith("0")) {
+            builder.append(number.toString())
+        } else {
+            builder.append(result.get()).append(number.toString())
+        }
         result.set(builder.toString())
     }
 
-    fun dotClicked(){
+    fun dotClicked() {
         val regex = result.get()?.indexOf(".")
         val builder = StringBuilder()
-        if (regex == -1){
+        if (result.get()?.isEmpty() == true) {
+            builder.append(result.get()).append("0.")
+            result.set(builder.toString())
+            return
+        }
+        if (regex == -1) {
             builder.append(result.get()).append(".")
+            result.set(builder.toString())
+        } else if (regex == 0) {
+            builder.append(result.get()).append("0.")
             result.set(builder.toString())
         }
     }
 
-    fun clearClicked(){
-        result.set("")
-        isOnce = false
-        isPlus = false
-        isMinus = false
+    fun clearClicked() {
+        result.set("0")
+        calcMethod = CalcFlg.NONE
     }
 
-    fun plusClicked(){
-        if (result.get() != ""){
+    fun plusClicked() {
+        if (result.get() != "") {
             mValueOne = result.get()?.toFloat() ?: 0.0F
-            isPlus = true
+            calcMethod = CalcFlg.PLUS
             result.set("")
         }
     }
 
-    fun minusClicked(){
-        if (result.get() != ""){
+    fun minusClicked() {
+        if (result.get() != "") {
             mValueOne = result.get()?.toFloat() ?: 0.0F
-            isMinus = true
+            calcMethod = CalcFlg.MINUS
             result.set("")
         }
     }
 
-    fun kakeruClicked(){
-        if (result.get() != ""){
+    fun multiplyClicked() {
+        if (result.get() != "") {
             mValueOne = result.get()?.toFloat() ?: 0.0F
-            isKakeru = true
+            calcMethod = CalcFlg.MULTIPLY
             result.set("")
         }
     }
 
-    fun waruClicked(){
-        if (result.get() != ""){
+    fun divideClicked() {
+        if (result.get() != "") {
             mValueOne = result.get()?.toFloat() ?: 0.0F
-            isWaru = true
+            calcMethod = CalcFlg.DIVIDE
             result.set("")
         }
     }
 
-    fun equalClicked(){
-        var resultAll = 0.0F
-        if (result.get() != ""){
-                val mValueTwo = result.get()?.toFloat() ?: 0.0F
+    fun equalClicked() {
+        var resultAll: Number
+        if (result.get() != "") {
+            val mValueTwo = result.get()?.toFloat() ?: 0.0F
 
-            when {
-                isPlus -> {
-                    resultAll = mValueOne + mValueTwo
+            when (calcMethod) {
+                CalcFlg.PLUS -> {
+                    resultAll = (mValueOne.toBigDecimal() + mValueTwo.toBigDecimal()).toFloat()
                     mValueOne = mValueTwo
                     result.set(resultAll.toString())
-                    isPlus = false
                 }
-                isMinus -> {
-                    resultAll = mValueOne - mValueTwo
+                CalcFlg.MINUS -> {
+                    resultAll = (mValueOne.toBigDecimal() - mValueTwo.toBigDecimal()).toFloat()
                     mValueOne = mValueTwo
                     result.set(resultAll.toString())
-                    isMinus = false
                 }
-                isKakeru -> {
-                    resultAll = mValueOne * mValueTwo
+                CalcFlg.MULTIPLY -> {
+                    resultAll = (mValueOne.toBigDecimal() * mValueTwo.toBigDecimal()).toFloat()
                     mValueOne = mValueTwo
                     result.set(resultAll.toString())
-                    isKakeru = false
                 }
-                isWaru -> {
-                    resultAll = mValueOne / mValueTwo
+                CalcFlg.DIVIDE -> {
+                    resultAll = (mValueOne.toBigDecimal() / mValueTwo.toBigDecimal()).toFloat()
                     mValueOne = mValueTwo
                     result.set(resultAll.toString())
-                    isWaru = false
                 }
             }
         }
-
     }
+}
+
+enum class CalcFlg{
+    NONE,
+    PLUS,
+    MINUS,
+    MULTIPLY,
+    DIVIDE
 }
