@@ -76,7 +76,7 @@ class CalcViewModel {
     }
 
     fun equalClicked() {
-        var resultAll: Number
+        val resultAll: Number
         if (result.get() != "") {
             val mValueTwo = result.get()?.toFloat() ?: 0.0F
 
@@ -101,6 +101,9 @@ class CalcViewModel {
                     mValueOne = mValueTwo
                     result.set(resultAll.toString())
                 }
+
+                //何もしないって記述
+                else -> Unit
             }
         }
     }
