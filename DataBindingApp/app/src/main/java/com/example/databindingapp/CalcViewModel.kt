@@ -75,6 +75,27 @@ class CalcViewModel {
         }
     }
 
+    fun changeMinus() {
+        val builder = StringBuilder()
+        if (result.get() != "") {
+            if (!result.get().toString().startsWith("-")) {
+                builder.append(result.get().toString())
+                builder.insert(0, "-")
+            } else {
+                builder.append(result.get().toString())
+                builder.deleteCharAt(0)
+            }
+            result.set(builder.toString())
+        }
+    }
+
+    fun percentageClicked() {
+        if (result.get() != "") {
+            mValueOne = result.get()?.toFloat() ?: 0.0F
+            result.set((mValueOne * 0.01).toString())
+        }
+    }
+
     fun equalClicked() {
         val resultAll: Number
         if (result.get() != "") {
@@ -82,24 +103,50 @@ class CalcViewModel {
 
             when (calcMethod) {
                 CalcFlg.PLUS -> {
-                    resultAll = (mValueOne.toBigDecimal() + mValueTwo.toBigDecimal()).toFloat()
-                    mValueOne = mValueTwo
-                    result.set(resultAll.toString())
+                    try {
+                        resultAll = (mValueOne.toBigDecimal() + mValueTwo.toBigDecimal()).toFloat()
+                        mValueOne = mValueTwo
+                        result.set(resultAll.toString())
+                    } catch (e:java.lang.NumberFormatException){
+
+                    } catch (e:java.lang.ArithmeticException){
+
+                    }
                 }
                 CalcFlg.MINUS -> {
-                    resultAll = (mValueOne.toBigDecimal() - mValueTwo.toBigDecimal()).toFloat()
-                    mValueOne = mValueTwo
-                    result.set(resultAll.toString())
+                    try {
+                        resultAll = (mValueOne.toBigDecimal() - mValueTwo.toBigDecimal()).toFloat()
+                        mValueOne = mValueTwo
+                        result.set(resultAll.toString())
+                    } catch (e:java.lang.NumberFormatException){
+
+                    }catch (e:java.lang.ArithmeticException){
+
+                    }
                 }
                 CalcFlg.MULTIPLY -> {
-                    resultAll = (mValueOne.toBigDecimal() * mValueTwo.toBigDecimal()).toFloat()
-                    mValueOne = mValueTwo
-                    result.set(resultAll.toString())
+                    try {
+                        resultAll = (mValueOne.toBigDecimal() * mValueTwo.toBigDecimal()).toFloat()
+                        mValueOne = mValueTwo
+                        result.set(resultAll.toString())
+                    }catch (e:java.lang.NumberFormatException){
+
+                    }catch (e:java.lang.ArithmeticException){
+
+                    }
+
                 }
                 CalcFlg.DIVIDE -> {
-                    resultAll = (mValueOne.toBigDecimal() / mValueTwo.toBigDecimal()).toFloat()
-                    mValueOne = mValueTwo
-                    result.set(resultAll.toString())
+                    try {
+                        resultAll = (mValueOne.toBigDecimal() / mValueTwo.toBigDecimal()).toFloat()
+                        mValueOne = mValueTwo
+                        result.set(resultAll.toString())
+                    }catch (e:java.lang.NumberFormatException){
+
+                    }catch (e:java.lang.ArithmeticException){
+
+                    }
+
                 }
 
                 //何もしないって記述
@@ -114,5 +161,5 @@ enum class CalcFlg{
     PLUS,
     MINUS,
     MULTIPLY,
-    DIVIDE
+    DIVIDE,
 }
