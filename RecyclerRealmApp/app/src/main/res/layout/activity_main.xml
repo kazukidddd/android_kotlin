@@ -17,7 +17,7 @@
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.0"
             android:hint="入力してください。"/>
     <Button
-            android:text="Button"
+            android:text="追加"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/button" android:layout_marginTop="32dp"

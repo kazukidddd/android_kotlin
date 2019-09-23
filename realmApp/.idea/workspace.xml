@@ -2,14 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1ef0c758-bbee-47ab-abbd-a7aff902251e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../RecyclerApp/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../RecyclerApp/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../RecyclerRealmApp/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../RecyclerRealmApp/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../RecyclerRealmApp/app/src/main/java/com/example/recyclerrealmapp/activities/ListActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../RecyclerRealmApp/app/src/main/java/com/example/recyclerrealmapp/activities/ListActivity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../RecyclerRealmApp/app/src/main/java/com/example/recyclerrealmapp/activities/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../RecyclerRealmApp/app/src/main/java/com/example/recyclerrealmapp/activities/MainActivity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../RecyclerRealmApp/app/src/main/java/com/example/recyclerrealmapp/entities/SampleAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../RecyclerRealmApp/app/src/main/java/com/example/recyclerrealmapp/entities/SampleAdapter.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../RecyclerRealmApp/app/src/main/res/layout/activity_list.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../RecyclerRealmApp/app/src/main/res/layout/activity_list.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../RecyclerRealmApp/app/src/main/res/layout/realm_list.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../RecyclerRealmApp/app/src/main/res/layout/realm_list.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../RecyclerRealmApp/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../RecyclerRealmApp/app/src/main/res/values/colors.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -21,7 +18,8 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="23" />
+    <option name="x" value="113" />
+    <option name="y" value="-967" />
     <option name="width" value="1280" />
     <option name="height" value="732" />
   </component>
@@ -31,23 +29,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="ProjectPane" />
       <pane id="PackagesPane" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="realmApp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="realmApp" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="realmApp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="realmApp" type="462c0819:PsiDirectoryNode" />
-              <item name="realmApp" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
       <pane id="Scope" />
     </panes>
   </component>
@@ -83,7 +66,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1280" height="732" extended-state="6" />
+    <frame x="113" y="-967" width="1280" height="732" extended-state="0" />
     <layout>
       <window_info id="Captures" order="0" weight="0.25" />
       <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.1437649" />

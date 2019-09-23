@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
+import android.view.MenuItem
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -19,12 +20,13 @@ import io.realm.RealmConfiguration
 import io.realm.RealmResults
 import io.realm.Sort
 import io.realm.kotlin.delete
+import kotlinx.android.synthetic.main.activity_list.*
 
 
 class ListActivity : AppCompatActivity() {
 
+    //表示用のリスト
     var textlist = ArrayList<SampleModel>()
-    private val adapter: RecyclerView.Adapter<*>? = null
     private lateinit var texts : RealmResults<SampleModel>
     private lateinit var mRealm : Realm
     private lateinit var recyclerView : RecyclerView
@@ -40,8 +42,11 @@ class ListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
 
-//        supportActionBar?.hide()
+        //戻るボタンを設定
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.title = "List"
 
+        // realm準備
         Realm.init(this)
 
         val realmConfig = RealmConfiguration.Builder()
@@ -52,7 +57,7 @@ class ListActivity : AppCompatActivity() {
         createData()
 
         viewManager = LinearLayoutManager(this)
-        viewAdapter = SampleAdapter(textlist,this)
+        viewAdapter = SampleAdapter(textlist)
 
         //RecyclerViewをレイアウトから探す
         recyclerView = findViewById<RecyclerView>(R.id.my_recycler_view).apply{
@@ -72,8 +77,29 @@ class ListActivity : AppCompatActivity() {
         // 画面サイズに合わせてレイアウトサイズを決定する。
         setLayoutSize(this)
         recyclerView.adapter = viewAdapter
+
+        fab.setOnClickListener {
+            realmDelete()
+            setContentView(R.layout.activity_list)
+        }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return super.onOptionsItemSelected(item)
+
+        onBackPressed()
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
+    /**
+     * realmの情報読み取り
+     */
     private fun createData(){
         texts = mRealm.where(SampleModel::class.java).findAll().sort("listId", Sort.ASCENDING)
         for (text in texts){
@@ -105,7 +131,7 @@ class ListActivity : AppCompatActivity() {
 
     //recyclerView をドラッグ、スワイプした時に呼び出されるコールバック関数
     private fun getRecyclerViewSimpleCallBack() =
-        // 引数で、上下のドラッグ、および左方向のスワイプを有効にしている。
+        // 引数で、上下のドラッグ、および左右のスワイプを有効にしている。
         object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
@@ -115,13 +141,7 @@ class ListActivity : AppCompatActivity() {
                 val fromPosition = p1.adapterPosition
                 val toPosition = p2.adapterPosition
 
-                /*
-                * ドラッグ時、viewType が異なるアイテムを超えるときに、
-                * notifyItemMoved を呼び出すと、ドラッグ操作がキャンセルされてしまう。
-                * （ドラッグは同じviewTypeを持つアイテム間で行う必要がある模様）
-                *
-                * 同じ ViewType アイテムを超える時だけ notifyItemMoved を呼び出す。
-                * */
+                // 同じ ViewType アイテムを超える時だけ notifyItemMoved を呼び出す。
                 if (p1.itemViewType == p2.itemViewType) {
                     textlist.add(toPosition, textlist.removeAt(fromPosition))
                     viewAdapter.notifyItemMoved(fromPosition, toPosition)
@@ -199,6 +219,7 @@ class ListActivity : AppCompatActivity() {
         viewHolder.itemView.isPressed = false
     }
 
+    // realmのリストを更新
     fun realmSave(){
         mRealm.executeTransaction {
             var realmTexts = mRealm.where(SampleModel::class.java).findAll().sort("id",Sort.ASCENDING)
@@ -208,21 +229,10 @@ class ListActivity : AppCompatActivity() {
         }
     }
 
-// TODO: 多分RX使ってやらないとドラッグからのrealmは難しい
-//    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-//        return if(keyCode == KeyEvent.KEYCODE_BACK) {
-//            // 戻るボタンの処理
-//            var safds = ArrayList<SampleModel>()
-//            safds = textlist
-//            mRealm.executeTransaction {
-//                texts.deleteAllFromRealm()
-//                for (text in safds){
-//                    var realmText = mRealm.createObject(SampleModel::class.java, if (texts != null)texts.size else 0)
-//                    realmText.name = text.name
-//                    realmText.listId = text.listId
-//                    mRealm.copyFromRealm(realmText)
-//                }
-//            }
-//            super.onKeyDown(keyCode, event)
-//    }
+    private fun realmDelete(){
+        mRealm.executeTransaction {
+            mRealm.deleteAll()
+            textlist = ArrayList()
+        }
+    }
 }

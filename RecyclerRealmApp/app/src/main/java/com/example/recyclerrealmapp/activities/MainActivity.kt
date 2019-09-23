@@ -21,8 +21,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // realm準備
         Realm.init(this)
-
         val realmConfig = RealmConfiguration.Builder()
             .deleteRealmIfMigrationNeeded()
             .build()
@@ -60,15 +60,22 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        /**
+         * Main画面に戻る時にテキストを非表示にする
+         */
         edit_text.text.clear()
     }
 
+    /**
+     * realmに追加
+     */
     fun create() {
         mRealm.executeTransaction {
             var texts = mRealm.createObject(SampleModel::class.java, realmId)
             if (!edit_text.text.isEmpty()){
                 texts.name = edit_text.text.toString()
             }else{
+                // 何も入力されてなければ「サヨナライオン」を登録する
                 texts.name = "サヨナライオン"
             }
             texts.listId = ids
