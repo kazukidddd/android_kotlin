@@ -224,7 +224,9 @@ class ListActivity : AppCompatActivity() {
         mRealm.executeTransaction {
             var realmTexts = mRealm.where(SampleModel::class.java).findAll().sort("id",Sort.ASCENDING)
             for ((index,text)in textlist.withIndex()){
-                realmTexts[text.id]?.listId = index
+                realmTexts.find { it.id == text.id }.let {
+                    it?.listId = index
+                }
             }
         }
     }
